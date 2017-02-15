@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Signature
 {
@@ -19,9 +15,51 @@ namespace Signature
                 filePath = Console.ReadLine();
             } while (!IsFilePathCorrect(filePath));
 
+            uint lenghtBlocks;
+            string tmpLenghtBlocks;
+            do
+            {
+                Console.WriteLine("Введите длинну блоков в байтах.");
+                Console.WriteLine("Это должно быть целое положительное число.");
+                tmpLenghtBlocks = Console.ReadLine();
+            } while (!IsLenghtBlocksCorrect(filePath));
+
+            lenghtBlocks = uint.Parse(tmpLenghtBlocks);
+
+            Signature signature = new Signature(tmpLenghtBlocks, lenghtBlocks);
+            
             Console.WriteLine("");
             Console.WriteLine("Нажмите любую клавишу для завершения...");
             Console.ReadKey(true);
+        }
+
+        public static bool IsLenghtBlocksCorrect(string tmpLenghtBlocks)
+        {
+            if (tmpLenghtBlocks.Length < 1)
+            {
+                Console.WriteLine("Ввод не может быть пустым.");
+                return false;
+            }
+
+            uint LenghtBlocks;
+
+            try
+            {
+               LenghtBlocks = uint.Parse(tmpLenghtBlocks);
+            }
+            catch
+            {
+                Console.WriteLine("Ввод не может содержать символы отличные от цифр и быть больше " + uint.MaxValue);
+                return false;
+            }
+
+            if (LenghtBlocks < 1)
+            {
+                Console.WriteLine("Длинна блоков должна быть больше 0");
+                return false;
+            }
+
+            return true;
         }
 
         public static bool IsFilePathCorrect(String filePath)

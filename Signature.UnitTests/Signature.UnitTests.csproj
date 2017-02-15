@@ -49,8 +49,8 @@
     <Otherwise />
   </Choose>
   <ItemGroup>
-    <Compile Include="SignatureMainTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SignatureMainTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

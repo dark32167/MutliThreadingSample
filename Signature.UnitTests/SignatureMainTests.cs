@@ -33,5 +33,30 @@ namespace Signature.UnitTests
 
             Assert.True(result);
         }
+
+        [TestCase("")]
+        [TestCase("0")]
+        [TestCase("1.0")]
+        [TestCase("5 0")]
+        [TestCase("999999999999999999999999999999999")]
+        [TestCase("1d")]
+        [TestCase("qwe")]
+        public void IsLenghtBlocksCorrect_InvalidExtensions_ReturnsFalse(string tmpLenghtBlocks)
+        {
+            bool result = SignatureMain.IsLenghtBlocksCorrect(tmpLenghtBlocks);
+
+            Assert.False(result);
+        }
+
+        [TestCase("1")]
+        [TestCase("500")]
+        [TestCase("01")]
+        public void IsLenghtBlocksCorrect_InvalidExtensions_ReturnsTrue(string tmpLenghtBlocks)
+        {
+            bool result = SignatureMain.IsLenghtBlocksCorrect(tmpLenghtBlocks);
+
+            Assert.True(result);
+        }
+
     }
 }
