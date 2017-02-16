@@ -11,6 +11,7 @@ namespace Signature.UnitTests
         [TestCase("")]
         [TestCase("1")]
         [TestCase(@"ControlFilesForTesting\ExistsButEmptyFile.txt")]
+        [TestCase(@"ControlFilesForTesting\;:*/ExistsButEmptyFile.txt")]
         public void IsFilePathCorrect_InvalidExtensions_ReturnsFalse(string filePath)
         {
             //получение пути к контрольным файлам, так как по умолчанию обращение идет в другую дирректорию
@@ -44,7 +45,7 @@ namespace Signature.UnitTests
         [TestCase("-1")]
         public void IsLenghtBlocksCorrect_InvalidExtensions_ReturnsFalse(string tmpLenghtBlocks)
         {
-            bool result = SignatureMain.IsLenghtBlocksCorrect(tmpLenghtBlocks);
+            bool result = SignatureMain.IsLengthBlocksCorrect(tmpLenghtBlocks);
 
             Assert.False(result);
         }
@@ -54,7 +55,7 @@ namespace Signature.UnitTests
         [TestCase("01")]
         public void IsLenghtBlocksCorrect_InvalidExtensions_ReturnsTrue(string tmpLenghtBlocks)
         {
-            bool result = SignatureMain.IsLenghtBlocksCorrect(tmpLenghtBlocks);
+            bool result = SignatureMain.IsLengthBlocksCorrect(tmpLenghtBlocks);
 
             Assert.True(result);
         }

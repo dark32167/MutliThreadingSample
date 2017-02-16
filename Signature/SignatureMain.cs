@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
+using System.Threading;
 
 namespace Signature
 {
@@ -15,26 +17,33 @@ namespace Signature
                 filePath = Console.ReadLine();
             } while (!IsFilePathCorrect(filePath));
 
-            uint lenghtBlocks;
-            string tmpLenghtBlocks;
+            int lengthBlocks;
+            string tmpLengthBlocks;
             do
             {
                 Console.WriteLine("Введите длинну блоков в байтах.");
                 Console.WriteLine("Это должно быть целое положительное число.");
-                tmpLenghtBlocks = Console.ReadLine();
-            } while (!IsLenghtBlocksCorrect(tmpLenghtBlocks));
+                tmpLengthBlocks = Console.ReadLine();
+            } while (!IsLengthBlocksCorrect(tmpLengthBlocks));
 
-            lenghtBlocks = uint.Parse(tmpLenghtBlocks);
-
-            Signature signature = new Signature(filePath, lenghtBlocks);
-            signature.StartCalculateSignature();
+            lengthBlocks = int.Parse(tmpLengthBlocks);            
+            try
+            {
+                Signature signature = new Signature(filePath, lengthBlocks);
+                signature.StartCalculateSignature();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                Console.WriteLine(e.StackTrace);
+            }
 
             Console.WriteLine("");
             Console.WriteLine("Нажмите любую клавишу для завершения...");
             Console.ReadKey(true);
         }
 
-        public static bool IsLenghtBlocksCorrect(string tmpLenghtBlocks)
+        public static bool IsLengthBlocksCorrect(string tmpLenghtBlocks)
         {
             if (tmpLenghtBlocks.Length < 1)
             {
@@ -71,12 +80,23 @@ namespace Signature
                 return false;
             }
 
-            FileInfo info = new FileInfo(filePath);
+            FileInfo info = null;
+            try
+            {
+                info = new FileInfo(filePath);
+            }
+            catch
+            {
+                Console.WriteLine("Путь к файлу содержит недопустимые символы, повторите ввод");
+                return false;
+            }
+
             if (!info.Exists)
             {
                 Console.WriteLine("Указанный файл не найден, повторите ввод");
                 return false;
             }
+
             if (info.Length == 0)
             {
                 Console.WriteLine("Указанный файл пуст, повторите ввод");
@@ -84,7 +104,6 @@ namespace Signature
             }
 
             return true;
-
         }
     }
 }
