@@ -41,6 +41,7 @@ namespace Signature.UnitTests
         [TestCase("999999999999999999999999999999999")]
         [TestCase("1d")]
         [TestCase("qwe")]
+        [TestCase("-1")]
         public void IsLenghtBlocksCorrect_InvalidExtensions_ReturnsFalse(string tmpLenghtBlocks)
         {
             bool result = SignatureMain.IsLenghtBlocksCorrect(tmpLenghtBlocks);

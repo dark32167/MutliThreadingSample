@@ -22,12 +22,13 @@ namespace Signature
                 Console.WriteLine("Введите длинну блоков в байтах.");
                 Console.WriteLine("Это должно быть целое положительное число.");
                 tmpLenghtBlocks = Console.ReadLine();
-            } while (!IsLenghtBlocksCorrect(filePath));
+            } while (!IsLenghtBlocksCorrect(tmpLenghtBlocks));
 
             lenghtBlocks = uint.Parse(tmpLenghtBlocks);
 
-            Signature signature = new Signature(tmpLenghtBlocks, lenghtBlocks);
-            
+            Signature signature = new Signature(filePath, lenghtBlocks);
+            signature.StartCalculateSignature();
+
             Console.WriteLine("");
             Console.WriteLine("Нажмите любую клавишу для завершения...");
             Console.ReadKey(true);
@@ -41,15 +42,15 @@ namespace Signature
                 return false;
             }
 
-            uint LenghtBlocks;
+            int LenghtBlocks;
 
             try
             {
-               LenghtBlocks = uint.Parse(tmpLenghtBlocks);
+               LenghtBlocks = int.Parse(tmpLenghtBlocks);
             }
             catch
             {
-                Console.WriteLine("Ввод не может содержать символы отличные от цифр и быть больше " + uint.MaxValue);
+                Console.WriteLine("Ввод не может содержать символы отличные от цифр и быть больше " + int.MaxValue);
                 return false;
             }
 
