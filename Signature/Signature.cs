@@ -71,23 +71,25 @@ namespace Signature
         private void CalculateSHA256Async(object objHashingBlock)
         {
             HashingBlock hashingBlock = (HashingBlock)objHashingBlock;
-            SHA256 hash = SHA256Managed.Create();
-            byte[] hashValue = hash.ComputeHash(hashingBlock.contentForHash);
-
-            hashingBlock.contentForHash = null;
-
-            /*В ходе интеграционных тестов выяснилось, 
-             *что при очень большом значении lenghtBlocks GC не успевает сработать автоматически 
-             *и программа выкидывает outOfMemoryException
-             */
-            GC.Collect();
-
-            string hashString = "";
-            foreach (var item in hashValue)
+            using (SHA256 hash = SHA256Managed.Create())
             {
-                hashString += String.Format("{0:X2}", item);
-            }
-            Console.WriteLine("[{0}] из [{1}] " + hashString , hashingBlock.curentBlockNumber, countBlocksInFile);
+                byte[] hashValue = hash.ComputeHash(hashingBlock.contentForHash);
+
+                hashingBlock.contentForHash = null;
+
+                /*В ходе интеграционных тестов выяснилось, 
+                 *что при очень большом значении lenghtBlocks GC не успевает сработать автоматически 
+                 *и программа выкидывает outOfMemoryException
+                 */
+                GC.Collect();
+
+                string hashString = "";
+                foreach (var item in hashValue)
+                {
+                    hashString += String.Format("{0:X2}", item);
+                }
+                Console.WriteLine("[{0}] из [{1}] " + hashString, hashingBlock.curentBlockNumber, countBlocksInFile);
+            };
         }
 
         private long CalculateCountOfBlocksInFile(long lengthFile)
@@ -98,7 +100,7 @@ namespace Signature
                 return lengthFile / lenghtBlocks + 1;
         }
 
-        private class HashingBlock
+        private struct HashingBlock
         {
             public byte[] contentForHash;
             public long curentBlockNumber;
