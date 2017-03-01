@@ -13,7 +13,7 @@ namespace Signature
         private int lenghtBlocks;
         private long countBlocksInFile;
         private long countDoneBlocks = 0;
-        private int countThreads = 1;
+        private int countThreads = Environment.ProcessorCount;
 
         private FileStream fileStream;
         BinaryReader binaryReader;
