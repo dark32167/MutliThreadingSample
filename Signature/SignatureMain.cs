@@ -58,10 +58,18 @@ namespace Signature
             try
             {
                LenghtBlocks = int.Parse(tmpLenghtBlocks);
+               if (LenghtBlocks > int.MaxValue / 2)
+                   throw new Exception();
             }
             catch
             {
-                Console.WriteLine("Ввод не может содержать символы отличные от цифр и быть больше " + int.MaxValue);
+                /* int.MaxValue/2 - блоки размером примерно в 1Гб, 
+                 * в ходе интеграционных тестов выяснилось, 
+                 * что если попробовать считывать блоки большего размера 
+                 * программа вылетит с ошибкой переполнения памяти, 
+                 * даже при явной компиляции под х64.
+                 */
+                Console.WriteLine("Ввод не может содержать символы отличные от цифр и быть больше " + int.MaxValue/2);
                 return false;
             }
 
