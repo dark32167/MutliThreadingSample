@@ -98,18 +98,6 @@ namespace Signature
                 return lengthFile / lenghtBlocks;
             else
                 return lengthFile / lenghtBlocks + 1;
-        }
-
-        private struct HashingBlock
-        {
-            public byte[] contentForHash;
-            public long curentBlockNumber;
-
-            public HashingBlock(byte[] contentForHash, long curentBlockNumber)
-            {
-                this.contentForHash = contentForHash;
-                this.curentBlockNumber = curentBlockNumber;
-            }
-        }
+        }       
     }
 }
