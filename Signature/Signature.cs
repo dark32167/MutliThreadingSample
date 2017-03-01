@@ -24,9 +24,12 @@ namespace Signature
             this.lenghtBlocks = lenghtBlocks;
             FileInfo fileInfo = new FileInfo(filePath);
             this.countBlocksInFile = CalculateCountOfBlocksInFile(fileInfo.Length);
-
-            PerformanceCounter _ramCounter = new PerformanceCounter("Memory", "Available Bytes");
-            Int64 AvailableRam = (Int64)_ramCounter.NextValue();
+            
+            Int64 AvailableRam;
+            using (PerformanceCounter _ramCounter = new PerformanceCounter("Memory", "Available Bytes"))
+            {
+                AvailableRam = (Int64)_ramCounter.NextValue();
+            }
             if ( (AvailableRam / lenghtBlocks) < countThreads)
                 countThreads = (int) (AvailableRam / lenghtBlocks);
         }
@@ -40,7 +43,7 @@ namespace Signature
             binaryReader = new BinaryReader(fileStream);
 
             Thread[] threadPool = new Thread[countThreads];
-
+            
             for (int i = 0; i < countThreads; i++)
             {
                 threadPool[i] = new Thread(CalculateSHA256Async);
