@@ -16,7 +16,7 @@ namespace Signature
         private int countThreads = Environment.ProcessorCount;
 
         private FileStream fileStream;
-        BinaryReader binaryReader;
+        private BinaryReader binaryReader;
         
         public Signature(string filePath, int lenghtBlocks)
         {
@@ -24,7 +24,7 @@ namespace Signature
             this.lenghtBlocks = lenghtBlocks;
             FileInfo fileInfo = new FileInfo(filePath);
             this.countBlocksInFile = CalculateCountOfBlocksInFile(fileInfo.Length);
-            
+
             Int64 AvailableRam;
             using (PerformanceCounter _ramCounter = new PerformanceCounter("Memory", "Available Bytes"))
             {
