@@ -7,7 +7,7 @@ using System.Diagnostics;
 
 namespace Signature
 {
-    class Signature : IDisposable
+    class Signature
     {
         private string filePath;
         private int lenghtBlocks;
@@ -39,20 +39,24 @@ namespace Signature
             System.Diagnostics.Stopwatch myStopwatch = new System.Diagnostics.Stopwatch();
             myStopwatch.Start();
 
-            fileStream = File.OpenRead(filePath);        
-            binaryReader = new BinaryReader(fileStream);
-
-            Thread[] threadPool = new Thread[countThreads];
-            
-            for (int i = 0; i < countThreads; i++)
+            using (fileStream = File.OpenRead(filePath))
             {
-                threadPool[i] = new Thread(CalculateSHA256Async);
-                threadPool[i].Start();
-            }
+                using (binaryReader = new BinaryReader(fileStream))
+                {
 
-            foreach (Thread item in threadPool)
-            {
-                item.Join();
+                    Thread[] threadPool = new Thread[countThreads];
+
+                    for (int i = 0; i < countThreads; i++)
+                    {
+                        threadPool[i] = new Thread(CalculateSHA256Async);
+                        threadPool[i].Start();
+                    }
+
+                    foreach (Thread item in threadPool)
+                    {
+                        item.Join();
+                    }
+                }
             }
 
             myStopwatch.Stop();
@@ -99,21 +103,6 @@ namespace Signature
             else
                 return lengthFile / lenghtBlocks + 1;
         }
-
-        #region destruct
-        public void Dispose()
-        {
-            fileStream.Close();
-            binaryReader.Close();
-            GC.SuppressFinalize(this);
-        }
-
-        ~Signature()
-        {
-            fileStream.Close();
-            binaryReader.Close();
-        }
-        #endregion
 
         private struct HashingBlock
         {

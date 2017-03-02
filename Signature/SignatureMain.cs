@@ -29,10 +29,8 @@ namespace Signature
             lengthBlocks = int.Parse(tmpLengthBlocks);            
             try
             {
-                using(Signature signature = new Signature(filePath, lengthBlocks))
-                {
-                    signature.StartCalculateSignature();
-                };
+                Signature signature = new Signature(filePath, lengthBlocks);
+                signature.StartCalculateSignature();
             }
             catch (Exception e)
             {
